@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
-import bookRoutes from './routes/bookRoutes.js';
+import bookRoutes from "./routes/bookRoutes.js";
 import { connectDB } from "./lib/db.js";
 import cors from "cors";
 import job from "./lib/cron.js";
@@ -11,13 +11,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
- connectDB();
+connectDB();
 
- job.start();
+job.start();
+console.log("🕒 Cron job started — sending keep-alive every 14 minutes.");
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/auth', authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
 
 app.listen(PORT, () => {

@@ -1,9 +1,17 @@
 import cron from "cron";
 import https from "https";
 
-const job = new cron.CronJob("*/14 * * * *", function () { // in every 14 min
+const job = new cron.CronJob("*/14 * * * *", function () {
+  // in every 14 min
+  const apiUrl = process.env.API_URL;
+  
+   if (!apiUrl) {
+    console.error("❌ CRON ERROR: API_URL not defined in environment variables!");
+    return;
+  }
+
   https
-    .get(process.env.API_URL, (res) => {
+    .get(apiUrl, (res) => {
       if (res.statusCode === 200) console.log("GET request sent successfully!");
       else console.log("GET request failed!", res.statusCode);
     })
