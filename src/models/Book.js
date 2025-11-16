@@ -6,6 +6,11 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+     caption: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     image: {
       type: String,
       required: true,
