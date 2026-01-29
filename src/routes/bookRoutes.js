@@ -10,12 +10,15 @@ router.post("/", protectRoute, async (req, res) => {
   try {
     const { title, caption, rating, image } = req.body;
 
-    if (!image || !title || !caption || !rating)
+    if (!image || !title || !caption || rating < 1 || rating > 5)
       return res.status(400).json({ message: "Please provide all fields" });
 
     // upload image to cloudinary
-    const uploadResonse = await cloudinary.uploader.upload(image);
-    const imageUrl = uploadResonse.secure_url;
+    const uploadResponse = await cloudinary.uploader.upload(image, {
+      folder: "bookworm",
+      timeout: 60000,
+    });
+    const imageUrl = uploadResponse.secure_url;
 
     //    save to db
     const newBook = new Book({
