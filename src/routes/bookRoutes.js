@@ -57,15 +57,11 @@ router.get("/", protectRoute, async (req, res) => {
 
     const totalBooks = await Book.countDocuments();
 
-    res.send({
-      books,
-      currentPage: page,
-      totalBooks,
-      totalPages: Math.ceil(totalBooks / limit),
-    });
     res.status(200).json({
       message: "Books fetched successfully",
       books,
+      currentPage: page,
+      totalPages: Math.ceil(totalBooks / limit),
     });
   } catch (error) {
     console.error(error);
@@ -77,20 +73,22 @@ router.get("/", protectRoute, async (req, res) => {
 });
 
 // get recommended books
-router.get("/user", protectRoute, async (req,res)=>{
-    try {
-        const books=await Book.find({user:req.user._id}).sort({createdAt:-1});  
-        res.status(200).json({
-            message:"User's books fetched successfully",
-            books
-        })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message:"Error fetching user's books",
-            error:error.message
-        })       
-    }
+router.get("/user", protectRoute, async (req, res) => {
+  try {
+    const books = await Book.find({ user: req.user._id }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json({
+      message: "User's books fetched successfully",
+      books,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error fetching user's books",
+      error: error.message,
+    });
+  }
 });
 
 // delete book
