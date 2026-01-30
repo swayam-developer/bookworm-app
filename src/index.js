@@ -5,6 +5,7 @@ import bookRoutes from "./routes/bookRoutes.js";
 import { connectDB } from "./lib/db.js";
 import cors from "cors";
 import job from "./lib/cron.js";
+import compression from 'compression';
 
 dotenv.config();
 
@@ -15,12 +16,13 @@ connectDB();
 
 job.start();
 console.log("🕒 Cron job started — sending keep-alive every 14 minutes.");
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: true, limit: "2mb" }));
+app.use(compression());
+res.setHeader("Cache-Control", "public, max-age=31536000");
 app.use(
   cors({
     origin: [
-      "http://localhost:8081", // Expo web
       "https://bookworm-app-wlck.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
