@@ -19,7 +19,6 @@ console.log("🕒 Cron job started — sending keep-alive every 14 minutes.");
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 app.use(compression());
-res.setHeader("Cache-Control", "public, max-age=31536000");
 app.use(
   cors({
     origin: [
